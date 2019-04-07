@@ -12,7 +12,7 @@
 #define PARCELSNUMBER 20
 
 typedef struct Parcel {
-    char  *key;
+    char  key[7];
     float longitude;
     float latitude;
 }Parcel;
@@ -142,10 +142,8 @@ void *rand_string(char *str){
 //generate random parcels in specific geo area 
 Parcels generateParcels(Parcels *parcels){
      for(int i=0;i<PARCELSNUMBER;i++){
-        char s[7];
-        rand_string(s);
         Parcel parcel;
-        parcel.key = s;
+        rand_string(parcel.key);
         parcel.latitude = randBetweenFloat(1 , 3);
         parcel.longitude = randBetweenFloat(2 , 8);
         *parcels = addParcelAtEnd(parcels , parcel);
