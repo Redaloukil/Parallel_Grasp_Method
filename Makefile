@@ -1,14 +1,5 @@
-.DEFAULT_GOAL := prepare
+main: main.o
+	gcc main.c -lm -o  main.o
 
-help:
-	@echo ""
-	@echo "Available tasks:"
-    @echo "prepare     desc of the command prepare"
-    @echo "    install              desc of the command install"
-	@echo ""
-
-prepare:
-	@echo "prepare task triggered"
-
-install:
-    @echo "install task triggered"
+main.o: main.c
+	gcc main.c -lm -o main.o   

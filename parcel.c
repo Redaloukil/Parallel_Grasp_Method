@@ -7,12 +7,13 @@
 #define STARTPOINT 0
 #define WORKERS_NUM 4 
 #define ALPHA 0.3
-#define CURRENTLAT 1.2
-#define CURRENTLON 2.2
+#define CURRENTLAT 0
+#define CURRENTLON 0
 #define PARCELSNUMBER 20
 
 typedef struct Parcel {
-    char  key[7];
+    int recovered;
+    char  *key;
     float longitude;
     float latitude;
 }Parcel;
@@ -51,9 +52,9 @@ Parcel initializeParcel(float latitude , float longitude , char *id){
     return parcel;
 }
 
-Parcels initializeList(Parcels parcels){
-    parcels.numberParcels = 0;
-    return parcels;
+Parcels initializeList(Parcels *parcels){
+    parcels->numberParcels = 0;
+    return *parcels;
 }
 
 Parcels addParcelAtEnd(Parcels *parcels , Parcel parcel) {
@@ -114,11 +115,13 @@ List removeWithIndex(List list , int i){
 
 //rand between integer
 int randBetweenInt(int min , int max ) {
+    srand (time(NULL));
     return ((int)rand()/RAND_MAX) * (max - min) + min;
 }
 
 //rand between float 
 float randBetweenFloat(int min , int max ) {
+    srand (time(NULL));
     return ((float)rand()/RAND_MAX) * (max - min) + min;
 }
 
@@ -128,12 +131,11 @@ float calculateCost(Parcel nextPoint , Cordinate startPoint){
 }
 
 void *rand_string(char *str){
-    srand(time(NULL));
+    srand (time(NULL));
     const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU";
     int num;
-    for (int n = 0; n < 6; n++)
-    {
-        printf("num : %d\n", num);
+    for (size_t n = 0; n < 6; n++){
+        num = (rand() % (sizeof(charset)));
         str[n] = charset[num];
     }
     str[6] = '\0';
@@ -143,7 +145,7 @@ void *rand_string(char *str){
 Parcels generateParcels(Parcels *parcels){
      for(int i=0;i<PARCELSNUMBER;i++){
         Parcel parcel;
-        rand_string(parcel.key);
+        // rand_string(parcel.key);
         parcel.latitude = randBetweenFloat(1 , 3);
         parcel.longitude = randBetweenFloat(2 , 8);
         *parcels = addParcelAtEnd(parcels , parcel);
@@ -177,35 +179,56 @@ float calculateMax(Cordinate startPoint , Parcels parcels){
     return max;
 }
 
+Parcels removeParcel(Parcels *parcels ,char *key){
+    for(int i=0;i<parcels->numberParcels;i++){
+        if(parcels->parcels[i].key == key){
+            parcels->parcels[i].recovered = 1;
+        }
+    }
+}
+
+//this procedure is KERNEL
 Parcels selectParcel(Parcels parcels ,Cordinate position){
     Parcels rcl;
     float min = calculateMin(position , parcels);
     float max = calculateMax(position , parcels);
     float item = min + ALPHA*(max - min);
     
-
     for(int i=0; i<parcels.numberParcels;i++){
-        float cost = calculateCost(parcels.parcels[i],position);
-        if(cost < item){
-            rcl.parcels[rcl.numberParcels] = parcels.parcels[i];
+        if(parcels.parcels[i].recovered == 0) {
+            float cost = calculateCost(parcels.parcels[i],position);
+            if(cost < item){
+                rcl.parcels[rcl.numberParcels] = parcels.parcels[i];
+            }
         }
     }
     return rcl;
 }
 
-void constructionPhase(Parcels parcels ,Parcels path){
+Parcels constructionPhase(Parcels *parcels ,Parcels *path){
+    
     Cordinate position;
+
     position.latitude = CURRENTLAT;
     position.longitude = CURRENTLON;
-    while(parcels.numberParcels > 0){
+
+    while(path->numberParcels < parcels->numberParcels){
         Parcels rcl;
-        rcl = selectParcel(parcels , position);
-        Parcel selectedParcel = rcl.parcels[0];
-        path.parcels[path.numberParcels] = selectedParcel;
-        path.numberParcels++;
+        printf("parcels choosen %d\n" , path->numberParcels);
+
+        rcl = selectParcel(*parcels , position);
+        int j = randBetweenInt(0 , rcl.numberParcels);
+        
+        Parcel selectedParcel = rcl.parcels[j];
+        printf("%s" , selectedParcel.key);
+        // *parcels = removeParcel(parcels , selectedParcel.key);
+        *path = addParcelAtEnd(path , selectedParcel);
         position.latitude = selectedParcel.latitude;
         position.longitude = selectedParcel.longitude;
+        initializeList(&rcl);
     }
+
+    return *path;
 }
 
 
