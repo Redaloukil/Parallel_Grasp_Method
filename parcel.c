@@ -228,7 +228,7 @@ Parcels removeParcel(Parcels *parcels ,char *key){
 }
 
 //this procedure is KERNEL
-Parcels selectParcel(Parcels parcels , Parcels rcl ,Cordinate position){
+Parcels selectParcel(Parcels parcels , Parcels *rcl ,Cordinate position){
     
     
     float min = calculateMin(position , parcels);
@@ -244,7 +244,7 @@ Parcels selectParcel(Parcels parcels , Parcels rcl ,Cordinate position){
             }
         }
     }
-    return rcl;
+    return *rcl;
 }
 
 Parcels constructionPhase(Parcels *parcels ,Parcels *path){
@@ -253,20 +253,20 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
 
     position.latitude = CURRENTLAT;
     position.longitude = CURRENTLON;
-    Parcels *rcl;
+    Parcels rcl;
     
     while(path->numberParcels < parcels->numberParcels){
         
         
-        *rcl = selectParcel(*parcels , *rcl , position);
-        int j = randBetweenInt(0 , rcl->numberParcels);
+        rcl = selectParcel(*parcels , &rcl , position);
+        int j = randBetweenInt(0 , rcl.numberParcels);
         
-        Parcel selectedParcel = rcl->parcels[j];
+        Parcel selectedParcel = rcl.parcels[j];
         *parcels = removeParcel(parcels , selectedParcel.key);
         *path = addParcelAtEnd(path , selectedParcel);
         position.latitude = selectedParcel.latitude;
         position.longitude = selectedParcel.longitude;
-        *rcl = initializeList(rcl);
+        rcl = initializeList(&rcl);
     }
 
     return *path;
