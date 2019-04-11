@@ -67,6 +67,42 @@ Parcels deleteParcelAtEnd(Parcels *parcels) {
     return *parcels;
 }
 
+List initializeChainedList(List parcels){
+    parcels = NULL;
+    return parcels;
+}
+
+
+void deleteParcel(List parcels, char *key) 
+{ 
+    // Store head node 
+    List temp = parcels, lastItem; 
+  
+    // If head node itself holds the key to be deleted 
+    if (temp != NULL && temp->parcel.key == key) 
+    { 
+        parcels = temp->nextParcel;   // Changed head 
+        free(temp);               // free old head 
+        return; 
+    } 
+  
+    // Search for the key to be deleted, keep track of the 
+    // previous node as we need to change 'prev->next' 
+    while (temp != NULL && temp->parcel.key != key) 
+    { 
+        lastItem = temp; 
+        temp = temp->nextParcel; 
+    } 
+    
+    // If key was not present in linked list 
+    if (temp == NULL) return; 
+  
+    // Unlink the node from linked list 
+    lastItem->nextParcel = temp->nextParcel; 
+  
+    free(temp);  // Free memory 
+} 
+
 List addParcelAtBegChained(List liste, Parcel parcel) {
     /* On crée un nouvel élément */
     Pnode* e = malloc(sizeof(Pnode));
@@ -142,15 +178,15 @@ void *rand_string(char *str){
 }
 
 //generate random parcels in specific geo area 
-Parcels generateParcels(Parcels *parcels){
+List generateParcels(List parcels){
      for(int i=0;i<PARCELSNUMBER;i++){
         Parcel parcel;
         // rand_string(parcel.key);
         parcel.latitude = randBetweenFloat(1 , 3);
         parcel.longitude = randBetweenFloat(2 , 8);
-        *parcels = addParcelAtEnd(parcels , parcel);
+        parcels = addParcelAtEndChained(parcels , parcel);
     }
-    return *parcels; 
+    return parcels; 
 }
 
 //calculate Min
@@ -170,12 +206,14 @@ float calculateMin(Cordinate startPoint , Parcels parcels){
 float calculateMax(Cordinate startPoint , Parcels parcels){
     float max = calculateCost(parcels.parcels[0],startPoint);
     int index = 0;
+    
     for(int i=1; i<parcels.numberParcels;i++){
         if(calculateCost(parcels.parcels[i], startPoint) > max){
             max = calculateCost(parcels.parcels[i] , startPoint );
             index = i;
         } 
     }   
+    
     return max;
 }
 
@@ -183,13 +221,16 @@ Parcels removeParcel(Parcels *parcels ,char *key){
     for(int i=0;i<parcels->numberParcels;i++){
         if(parcels->parcels[i].key == key){
             parcels->parcels[i].recovered = 1;
+            return *parcels;
         }
     }
+    return *parcels;
 }
 
 //this procedure is KERNEL
-Parcels selectParcel(Parcels parcels ,Cordinate position){
-    Parcels rcl;
+Parcels selectParcel(Parcels parcels , Parcels rcl ,Cordinate position){
+    
+    
     float min = calculateMin(position , parcels);
     float max = calculateMax(position , parcels);
     float item = min + ALPHA*(max - min);
@@ -198,7 +239,8 @@ Parcels selectParcel(Parcels parcels ,Cordinate position){
         if(parcels.parcels[i].recovered == 0) {
             float cost = calculateCost(parcels.parcels[i],position);
             if(cost < item){
-                rcl.parcels[rcl.numberParcels] = parcels.parcels[i];
+                printf("selected");
+                addParcelAtEnd(&rcl , parcels.parcels[i]);
             }
         }
     }
@@ -211,21 +253,20 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
 
     position.latitude = CURRENTLAT;
     position.longitude = CURRENTLON;
-
+    Parcels *rcl;
+    
     while(path->numberParcels < parcels->numberParcels){
-        Parcels rcl;
-        printf("parcels choosen %d\n" , path->numberParcels);
-
-        rcl = selectParcel(*parcels , position);
-        int j = randBetweenInt(0 , rcl.numberParcels);
         
-        Parcel selectedParcel = rcl.parcels[j];
-        printf("%s" , selectedParcel.key);
-        // *parcels = removeParcel(parcels , selectedParcel.key);
+        
+        *rcl = selectParcel(*parcels , *rcl , position);
+        int j = randBetweenInt(0 , rcl->numberParcels);
+        
+        Parcel selectedParcel = rcl->parcels[j];
+        *parcels = removeParcel(parcels , selectedParcel.key);
         *path = addParcelAtEnd(path , selectedParcel);
         position.latitude = selectedParcel.latitude;
         position.longitude = selectedParcel.longitude;
-        initializeList(&rcl);
+        *rcl = initializeList(rcl);
     }
 
     return *path;
@@ -234,7 +275,7 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
 
 
 
-Parcel randomSelect(Parcels rcl){
+// Parcel randomSelect(Parcels rcl){
     
-}
+// }
 

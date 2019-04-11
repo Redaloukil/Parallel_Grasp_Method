@@ -39,21 +39,17 @@ int main(){
     Parcel parcel4;parcel4.recovered =0; parcel4.latitude = 4; parcel4.longitude = 5; parcel4.key="pfdgga";
     
     // parcels = generateParcels(&parcels);
-    parcels = addParcelAtEnd(&parcels , parcel0 );
-    parcels = addParcelAtEnd(&parcels , parcel1 );
-    parcels = addParcelAtEnd(&parcels , parcel2 );
-    parcels = addParcelAtEnd(&parcels , parcel3 );
-    parcels = addParcelAtEnd(&parcels , parcel4 );
+    parcels = addParcelAtEnd(&parcels , parcel0);
+    parcels = addParcelAtEnd(&parcels , parcel1);
+    parcels = addParcelAtEnd(&parcels , parcel2);
+    parcels = addParcelAtEnd(&parcels , parcel3);
+    parcels = addParcelAtEnd(&parcels , parcel4);
     
     
 
+    constructionPhase(&parcels , &path);
 
-    for(int i=0;i<parcels.numberParcels;i++){
-        printf("%d" , i);
-        printf("latitude : %f ,longitude : %f ,key : %s\n" ,parcels.parcels[i].latitude ,parcels.parcels[i].longitude , parcels.parcels[i].key );
-    }
     
-    path = constructionPhase(&parcels , &path);
     
 
     t = clock() - 1;
