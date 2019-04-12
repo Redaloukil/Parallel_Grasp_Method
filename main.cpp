@@ -28,6 +28,7 @@ int main ()
     //delete parcel 
     // parcels.erase(parcels.begin());
 
+    
     std::cout << "Parcels list stores " << int(parcels.size()) << " numbers.\n";
 
   return 0;
