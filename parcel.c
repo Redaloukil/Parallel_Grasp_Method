@@ -41,7 +41,8 @@ typedef struct Pnode *List;
 
 
 float square(float number){
-    return number*number;
+    float a = number*number; 
+    return a;
 }
 //Array list 
 Parcel initializeParcel(float latitude , float longitude , char *id){
@@ -163,7 +164,8 @@ float randBetweenFloat(int min , int max ) {
 
 //calculate the cost between current and next point 
 float calculateCost(Parcel nextPoint , Cordinate startPoint){
-    return sqrtf(square(nextPoint.longitude - startPoint.longitude) + square(nextPoint.latitude - startPoint.latitude));
+    float b = (square(nextPoint.longitude - startPoint.longitude)) + (square(nextPoint.latitude - startPoint.latitude));
+    return sqrt(b);
 }
 
 void *rand_string(char *str){
@@ -193,9 +195,10 @@ List generateParcels(List parcels){
 float calculateMin(Cordinate startPoint , Parcels parcels){
     float min = calculateCost(parcels.parcels[0],startPoint);
     int index = 0;
+    
     for(int i=1; i<parcels.numberParcels;i++){
         if(calculateCost(parcels.parcels[i],startPoint) < min){
-            min = calculateCost(parcels.parcels[i] ,startPoint );
+            min = calculateCost(parcels.parcels[i] ,startPoint);
             index = i;
         } 
     }
@@ -229,18 +232,21 @@ Parcels removeParcel(Parcels *parcels ,char *key){
 
 //this procedure is KERNEL
 Parcels selectParcel(Parcels parcels , Parcels *rcl ,Cordinate position){
-    
-    
     float min = calculateMin(position , parcels);
     float max = calculateMax(position , parcels);
+
     float item = min + ALPHA*(max - min);
-    
+    printf("the constant is %f\n" ,item);
     for(int i=0; i<parcels.numberParcels;i++){
         if(parcels.parcels[i].recovered == 0) {
             float cost = calculateCost(parcels.parcels[i],position);
+            printf("%f" , cost);
             if(cost < item){
-                printf("selected");
-                addParcelAtEnd(&rcl , parcels.parcels[i]);
+                printf(" selected\n");
+                addParcelAtEnd(rcl , parcels.parcels[i]);
+            }
+            else {
+                printf(" not selected\n");
             }
         }
     }
@@ -259,11 +265,13 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
         
         
         rcl = selectParcel(*parcels , &rcl , position);
+        printf("the length of rcl %d\n" , rcl.numberParcels);
         int j = randBetweenInt(0 , rcl.numberParcels);
         
         Parcel selectedParcel = rcl.parcels[j];
         *parcels = removeParcel(parcels , selectedParcel.key);
         *path = addParcelAtEnd(path , selectedParcel);
+
         position.latitude = selectedParcel.latitude;
         position.longitude = selectedParcel.longitude;
         rcl = initializeList(&rcl);
