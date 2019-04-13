@@ -18,6 +18,11 @@ typedef struct Parcel {
     float latitude;
 }Parcel;
 
+typedef struct SelectParcel {
+    Parcel parcel;
+    int index;
+}SelectParcel;
+
 typedef struct Pnode Pnode;
 
 struct Pnode {
@@ -220,15 +225,7 @@ float calculateMax(Cordinate startPoint , Parcels parcels){
     return max;
 }
 
-Parcels removeParcel(Parcels *parcels ,char *key){
-    for(int i=0;i<parcels->numberParcels;i++){
-        if(parcels->parcels[i].key == key){
-            parcels->parcels[i].recovered = 1;
-            return *parcels;
-        }
-    }
-    return *parcels;
-}
+
 
 //this procedure is KERNEL
 Parcels selectParcel(Parcels parcels , Parcels *rcl ,Cordinate position){

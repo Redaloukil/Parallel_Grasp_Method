@@ -23,10 +23,19 @@ typedef struct Parcel {
     float latitude;
 }Parcel;
 
+typedef struct SelectParcel {
+    Parcel parcel;
+    int index;
+}SelectParcel;
+
 //Array list representation
 typedef struct Parcels {   
     std::vector<Parcel> parcels;
 }Parcels;
+
+typedef struct Rcl {
+    std::vector<SelectParcel> parcels;
+}Rcl;
 
 float square(float number){
     float a = number*number; 
@@ -46,6 +55,12 @@ Parcels initializeList(Parcels *parcels){
     parcels->parcels.clear();
     return *parcels;
 }
+
+Rcl initializeRCList(Rcl *rcl){
+    rcl->parcels.clear();
+    return *rcl;
+}
+
 
 Parcels addParcelAtEnd(Parcels *parcels , Parcel parcel) {
     parcels->parcels.push_back(parcel);
@@ -127,8 +142,12 @@ float calculateMax(Cordinate startPoint , Parcels *parcels){
     return max;
 }
 
+Parcels removeParcel(Parcels *parcels , int index){
+    parcels->parcels.clear();
+    return *parcels;
+}
 //this procedure is KERNEL
-Parcels selectParcel(Parcels *parcels , Parcels *rcl ,Cordinate position){
+Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position){
     float min = calculateMin(position , parcels);
     float max = calculateMax(position , parcels);
 
@@ -139,11 +158,42 @@ Parcels selectParcel(Parcels *parcels , Parcels *rcl ,Cordinate position){
             float cost = calculateCost(parcels->parcels[i],position);
             printf("%f" , cost);
             if(cost < item){
+                int index = i;
+                SelectParcel parcel;parcel.index = index;parcel.parcel = parcels->parcels[i];
+
                 printf(" selected\n");
-                addParcelAtEnd(rcl , parcels->parcels[i]);
+                rcl->parcels.push_back(parcel);
             }
             
         }
     
     return *rcl;
+}
+
+
+Parcels constructionPhase(Parcels *parcels ,Parcels *path){
+    
+    Cordinate position;
+
+    position.latitude = CURRENTLAT;
+    position.longitude = CURRENTLON;
+    Rcl rcl;
+    
+    while(path->parcels.size() < parcels->parcels.size()){
+        
+        rcl = selectParcel(parcels , &rcl , position);
+        printf("the length of rcl %d\n" , rcl.parcels.size());
+        int j = randBetweenInt(0 , rcl.parcels.size());
+        
+        SelectParcel selectedParcel = rcl.parcels[j];
+        *parcels = removeParcel(parcels , selectedParcel.index);
+        *path = addParcelAtEnd(path , selectedParcel.parcel);
+
+        position.latitude = selectedParcel.parcel.latitude;
+        position.longitude = selectedParcel.parcel.longitude;
+        rcl = initializeRCList(&rcl);
+
+    }
+
+    return *path;
 }
