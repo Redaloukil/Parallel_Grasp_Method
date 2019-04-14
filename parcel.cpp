@@ -72,7 +72,8 @@ Parcels deleteParcelAtEnd(Parcels *parcels) {
 
 int randBetweenInt(int min , int max ) {
     srand (time(NULL));
-    int i = ((int)rand()/RAND_MAX) * (max - min) + min; 
+    // int randNum = rand()%(max-min + 1) + min;
+    int i = ((int)rand()%(max-min) + min ); 
     printf("random generated %d\n" , i);
     return i;
 }
@@ -80,7 +81,6 @@ int randBetweenInt(int min , int max ) {
 //rand between float 
 float randBetweenFloat(int min , int max ) {
     srand(time(NULL));
-    cout << rand() << endl;
     return ((float)rand()/RAND_MAX) * (max - min) + min;
 }
 
@@ -190,7 +190,7 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path , float *distance){
         int j = randBetweenInt(0 , rcl.parcels.size());
         
         SelectParcel selectedParcel = rcl.parcels[j];
-        float d = calculateCost( selectedParcel.parcel, position);
+        float d = calculateCost(selectedParcel.parcel, position);
         *distance = *distance + d;
         *parcels = removeParcel(parcels , selectedParcel.index);
         *path = addParcelAtEnd(path , selectedParcel.parcel);
