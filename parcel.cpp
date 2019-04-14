@@ -6,7 +6,7 @@
 
 #define STARTPOINT 0
 #define WORKERS_NUM 4 
-#define ALPHA 0.3
+#define ALPHA 0.6
 #define CURRENTLAT 0
 #define CURRENTLON 0
 #define PARCELSNUMBER 20
@@ -17,8 +17,6 @@ typedef struct Cordinate {
 }Cordinate;
 
 typedef struct Parcel {
-    int recovered;
-    char  *key;
     float longitude;
     float latitude;
 }Parcel;
@@ -74,12 +72,15 @@ Parcels deleteParcelAtEnd(Parcels *parcels) {
 
 int randBetweenInt(int min , int max ) {
     srand (time(NULL));
-    return ((int)rand()/RAND_MAX) * (max - min) + min;
+    int i = ((int)rand()/RAND_MAX) * (max - min) + min; 
+    printf("random generated %d\n" , i);
+    return i;
 }
 
 //rand between float 
 float randBetweenFloat(int min , int max ) {
-    srand (time(NULL));
+    srand(time(NULL));
+    cout << rand() << endl;
     return ((float)rand()/RAND_MAX) * (max - min) + min;
 }
 
@@ -143,7 +144,7 @@ float calculateMax(Cordinate startPoint , Parcels *parcels){
 }
 
 Parcels removeParcel(Parcels *parcels , int index){
-    parcels->parcels.clear();
+    parcels->parcels.erase(parcels->parcels.cbegin()+index);
     return *parcels;
 }
 //this procedure is KERNEL
@@ -157,12 +158,15 @@ Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position){
         
             float cost = calculateCost(parcels->parcels[i],position);
             printf("%f" , cost);
-            if(cost < item){
+            if(cost <= item){
                 int index = i;
                 SelectParcel parcel;parcel.index = index;parcel.parcel = parcels->parcels[i];
 
                 printf(" selected\n");
                 rcl->parcels.push_back(parcel);
+            }
+            else {
+                printf(" not selected\n");
             }
             
         }
@@ -171,7 +175,7 @@ Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position){
 }
 
 
-Parcels constructionPhase(Parcels *parcels ,Parcels *path){
+Parcels constructionPhase(Parcels *parcels ,Parcels *path , float *distance){
     
     Cordinate position;
 
@@ -179,20 +183,45 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
     position.longitude = CURRENTLON;
     Rcl rcl;
     
-    while(path->parcels.size() < parcels->parcels.size()){
-        
+    while(parcels->parcels.size() > 0){
+        printf("the length of parcels %d\n" , (int )parcels->parcels.size());
         rcl = selectParcel(parcels , &rcl , position);
-        printf("the length of rcl %d\n" , rcl.parcels.size());
+        printf("the length of rcl %d\n" , (int )rcl.parcels.size());
         int j = randBetweenInt(0 , rcl.parcels.size());
         
         SelectParcel selectedParcel = rcl.parcels[j];
+        float d = calculateCost( selectedParcel.parcel, position);
+        *distance = *distance + d;
         *parcels = removeParcel(parcels , selectedParcel.index);
         *path = addParcelAtEnd(path , selectedParcel.parcel);
-
+        printf("the length of path %d\n" , (int )path->parcels.size());
+        printf("the length of parcels %d\n" , (int )parcels->parcels.size());
+        
         position.latitude = selectedParcel.parcel.latitude;
         position.longitude = selectedParcel.parcel.longitude;
         rcl = initializeRCList(&rcl);
 
+    }
+    return *path;
+
+}
+
+Parcels randomSearch(Parcels *parcels , Parcels *path){
+    
+    while(parcels->parcels.size() > 0){
+        
+        printf("the length of parcels %d\n" , (int )parcels->parcels.size());
+        
+        int j = randBetweenInt(0 , parcels->parcels.size());
+        Parcel parcel = parcels->parcels[j];
+        path->parcels.push_back(parcel);
+        
+        parcels->parcels.erase(parcels->parcels.cbegin() + j);
+        
+        printf("the length of path %d\n" , (int )path->parcels.size());
+        printf("the length of parcels %d\n" , (int )parcels->parcels.size());
+        
+        
     }
 
     return *path;
