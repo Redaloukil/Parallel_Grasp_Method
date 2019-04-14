@@ -1,2 +1,3 @@
 <h1>Parallel GRASP using Cuda</h1>
 <hr>
+<p>The construction phase of an initial solution in the GRASP method (Greedy Randomized Adaptive Search Procedure) is a generally greedy phase in computing time. This phase is already implemented on CPU sequentially as part of a master project in 2016-2017. To speed up this phase, we propose to implement it on a GPU so parallel and evaluate its performance against the CPU version.</p>
