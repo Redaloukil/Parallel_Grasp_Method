@@ -1,38 +1,33 @@
-#include"parcels.c"
+#include"parcels.cpp"
 
+float square(float number)
 
-Parcels addParcelAtEnd(Parcels *parcels,Parcel parcel);
+Parcel initializeParcel(float latitude , float longitude , char *id)
 
-Parcels deleteParcelAtEnd(Parcels *parcels);
+Parcels initializeList(Parcels *parcels)
 
-Parcels initializeList(Parcels *parcels);
+Rcl initializeRCList(Rcl *rcl)
 
-List addParcelAtBegChained(List liste, Parcel parcel);
+Parcels addParcelAtEnd(Parcels *parcels , Parcel parcel)
 
-List addParcelAtBegChained(List list, Parcel parcel);
+Parcels deleteParcelAtEnd(Parcels *parcels)
 
-int randBetweenInt(int min , int max );
+int randBetweenInt(int min , int max)
 
-float randBetweenFloat(float min, float max);
+float randBetweenFloat(int min , int max)
 
-float calculateCost(Parcel nextPoint , Cordinate startPoint);
+float calculateCost(Parcel nextPoint , Cordinate startPoint)
 
-float generateCordinates(Cordinate c1 , Cordinate c2 , Cordinate c3 , Cordinate c4);
+void rand_string(char *str)
 
-float square(float number);
+Parcels generateParcels(Parcels *parcels)
 
-Parcels generateParcels(Parcels *parcels);
+float calculateMin(Cordinate startPoint , Parcels *parcels)
 
-float calculateMin(Cordinate startPoint , Parcels parcels);
+float calculateMax(Cordinate startPoint , Parcels *parcels)
 
-float calculateMax(Cordinate startPoint , Parcels parcels);
+Parcels removeParcel(Parcels *parcels , int index)
 
-Parcels selectParcel(Parcels parcels ,Cordinate position);
+Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position)
 
-void constructionPhase(Parcels parcels ,Parcels path);
-
-Parcel randomSelect(Parcels rcl);
-
-char *rand_string();
-
-
+Parcels constructionPhase(Parcels *parcels ,Parcels *path , float *distance)

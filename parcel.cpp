@@ -119,13 +119,13 @@ Parcels generateParcels(Parcels *parcels){
 float calculateMin(Cordinate startPoint , Parcels *parcels){
     float min = calculateCost(parcels->parcels[0],startPoint);
     
-    
     for(unsigned int i=1; i<parcels->parcels.size();i++){
         if(calculateCost(parcels->parcels[i],startPoint) < min){
             min = calculateCost(parcels->parcels[i] ,startPoint);
             
         } 
     }
+
     return min;
 }
 
@@ -133,13 +133,12 @@ float calculateMin(Cordinate startPoint , Parcels *parcels){
 float calculateMax(Cordinate startPoint , Parcels *parcels){
     float max = calculateCost(parcels->parcels[0],startPoint);
     
-    
     for(unsigned int i=1; i<parcels->parcels.size();i++){
         if(calculateCost(parcels->parcels[i], startPoint) > max){
             max = calculateCost(parcels->parcels[i] , startPoint );
-           
         } 
-    }   
+    }
+
     return max;
 }
 
@@ -147,7 +146,6 @@ Parcels removeParcel(Parcels *parcels , int index){
     parcels->parcels.erase(parcels->parcels.cbegin()+index);
     return *parcels;
 }
-//this procedure is KERNEL
 Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position){
     float min = calculateMin(position , parcels);
     float max = calculateMax(position , parcels);
@@ -220,9 +218,8 @@ Parcels randomSearch(Parcels *parcels , Parcels *path){
         
         printf("the length of path %d\n" , (int )path->parcels.size());
         printf("the length of parcels %d\n" , (int )parcels->parcels.size());
-        
-        
-    }
+    
+}
 
     return *path;
 }

@@ -1,0 +1,2 @@
+1 - Get min and max , lunch cuda threads to get the minimum value.
+2 - Every Thread constructs its local rcl.
