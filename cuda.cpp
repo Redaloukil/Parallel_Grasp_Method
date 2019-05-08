@@ -5,32 +5,27 @@
 
 #define NUMBEROFWORKERS 3
 
-// __global__
-// void parallelMinCalculation(Parcels parcels){
-//     min = getMinValue(parcels);
-
-// }
 
 
-void pushGlobalRcl(){
-    // mutual exclusion condition
-    while(){
+// std::mutex rcl_mutex;
+void pushGlobalRcl(Parcel parcel , int thread_index , Rcl rcl){
+    rcl->parcels[thread_index] = parcel;
+    
 
-    }
 }
-__GLOBAL__
-void SelectionPhase(Parcels *parcels , Rcl *rcl ,Cordinate position){
-    float min = calculateMin(position , parcels);
-    float max = calculateMax(position , parcels);
 
-    float item = min + ALPHA*(max - min);
 
-    Rcl localRcl;     
+__GLOBAL__ 
+void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
+    //malloc a list local rcl
+    Rcl localRcl;
+    
     
     int t = threadIdx.x;
     int T = blockDim.x;
     
-    for (int i = t;i<parcels->parcels.size(); i += NUMBEROFWORKERS){
+    
+    for (int i = t;i<parcels->parcels.size(); i += T){
         float cost = calculateCost(position , parcels->parcels[i]);
         if(cost <= item){
             int index = i;
@@ -43,18 +38,26 @@ void SelectionPhase(Parcels *parcels , Rcl *rcl ,Cordinate position){
     }
     //select randomly from rcl
     int elem = randBetweenInt(0 , rcl->parcels.size());
-    
     //push selected parcel to the global rcl 
-    pushGlobalRcl(rcl , localRcl->parcels[cbegin() + elem]);
-
+    pushGlobalRcl();
 }   
 
 
 void parellelConstructionPhase(Parcels parcels){
     Rcl rcl;
-    rcl = initializeRCList(&rcl);
+    cuda
+    
     while(parcels > 0){
-        rcl = SelectionPhase(parcels , rcl)
+        float min = calculateMin(position , parcels);
+        float max = calculateMax(position , parcels);
+        
+        float item = min + ALPHA*(max - min);
+
+        SelectionPhase<<<NUMBEROFWORKERS , 1 >>>(parcels , rcl);
+        
+        float item = min + ALPHA*(max - min);
     }
 }
+
+
 

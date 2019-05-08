@@ -173,7 +173,7 @@ Rcl selectParcel(Parcels *parcels , Rcl *rcl ,Cordinate position){
 }
 
 
-Parcels constructionPhase(Parcels *parcels ,Parcels *path , float *distance){
+Parcels constructionPhase(Parcels *parcels ,Parcels *path){
     
     Cordinate position;
 
@@ -181,15 +181,13 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path , float *distance){
     position.longitude = CURRENTLON;
     Rcl rcl;
     
-    while(parcels->parcels.size() > 0){
+    while(parcels->parcels.size() != 0){
         printf("the length of parcels %d\n" , (int )parcels->parcels.size());
         rcl = selectParcel(parcels , &rcl , position);
         printf("the length of rcl %d\n" , (int )rcl.parcels.size());
         int j = randBetweenInt(0 , rcl.parcels.size());
         
         SelectParcel selectedParcel = rcl.parcels[j];
-        float d = calculateCost(selectedParcel.parcel, position);
-        *distance = *distance + d;
         *parcels = removeParcel(parcels , selectedParcel.index);
         *path = addParcelAtEnd(path , selectedParcel.parcel);
         printf("the length of path %d\n" , (int )path->parcels.size());
@@ -222,4 +220,15 @@ Parcels randomSearch(Parcels *parcels , Parcels *path){
 }
 
     return *path;
+}
+
+float calculatePathCost(Parcels *path){ 
+    float distance = 0;
+    for(int i =0; i < (int)path->parcels.size();i++){
+        Cordinate start_cordinate;
+        start_cordinate.latitude = path->parcels[i].latitude;
+        start_cordinate.longitude = path->parcels[i].longitude;
+        distance = distance + calculateCost(path->parcels[i+1] , start_cordinate);
+    }
+    return distance;
 }

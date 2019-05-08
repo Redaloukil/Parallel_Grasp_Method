@@ -1,2 +1,12 @@
 1 - Get min and max , lunch cuda threads to get the minimum value.
 2 - Every Thread constructs its local rcl.
+
+
+//parrallel grasp
+1 - malloc list called rcl.
+2 - each kernel search for the adequate elements and put it to it's local rcl.
+3 - each kernel select random element from local rcl.
+4 - each kernel select an element and isnert it the global rcl via mapping fucntion.
+4 - select randomnly from rcl.
+4 - while path length != go to 1 - 
+

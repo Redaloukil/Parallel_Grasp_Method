@@ -1,15 +1,14 @@
 // vector::push_back
 #include <iostream>
-#include "parcel.cpp"
-#include "cuda.cpp"
+#include"parcel.cpp"
+// #include "cuda.cpp"
 #include <vector>
 
 using namespace std;
 
 
 
-int main ()
-{ 
+int main () { 
   clock_t t;
     
     Parcels parcels;
@@ -48,10 +47,8 @@ int main ()
     parcels = addParcelAtEnd(&parcels , parcel9);
     
 
-    path = parellelConstructionPhase(&parcels , &path , &d1);
-
-    
-    
+    path = randomSearch(&parcels , &path);
+   
     for(int i = 0 ; i < (int)path.parcels.size();i++ ){
       cout << "point " << i << "with latitude " << path.parcels[i].latitude << " with longitude " << path.parcels[i].longitude << "\n";
     }
@@ -63,8 +60,6 @@ int main ()
     double execution_time = ((double)t);
     printf("it takes %f ms to execute", execution_time);
     return 0;
-  
-
   
 
   

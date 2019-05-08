@@ -1,8 +1,8 @@
 // vector::push_back
-#include <iostream>
-#include "parcel.cpp"
-#include <vector>
-
+#include<iostream>
+#include"parcel.cpp"
+#include<vector>
+#include<algorithm>
 using namespace std;
 
 
@@ -34,6 +34,14 @@ int main ()
     Parcel parcel7; parcel7.latitude = -1; parcel7.longitude = 2; 
     Parcel parcel8; parcel8.latitude = 3; parcel8.longitude = 2; 
     Parcel parcel9; parcel9.latitude = 0; parcel9.longitude = 5; 
+    Parcel parcel10; parcel10.latitude = 10; parcel10.longitude = 2;
+    Parcel parcel11; parcel11.latitude = 4; parcel11.longitude = 6; 
+    Parcel parcel12; parcel12.latitude = -3; parcel12.longitude = 3; 
+    Parcel parcel13; parcel13.latitude = 9; parcel13.longitude = 2; 
+    Parcel parcel14; parcel14.latitude = 4; parcel14.longitude = 0; 
+    Parcel parcel15; parcel15.latitude = 3; parcel15.longitude = 0;
+    Parcel parcel16; parcel16.latitude = 4; parcel16.longitude = 8; 
+    
     // parcels = generateParcels(&parcels);
     parcels = addParcelAtEnd(&parcels , parcel0);
     parcels = addParcelAtEnd(&parcels , parcel1);
@@ -45,18 +53,44 @@ int main ()
     parcels = addParcelAtEnd(&parcels , parcel7);
     parcels = addParcelAtEnd(&parcels , parcel8);
     parcels = addParcelAtEnd(&parcels , parcel9);
+    parcels = addParcelAtEnd(&parcels , parcel10);
+    parcels = addParcelAtEnd(&parcels , parcel11);
+    parcels = addParcelAtEnd(&parcels , parcel12);
+    parcels = addParcelAtEnd(&parcels , parcel13);
+    parcels = addParcelAtEnd(&parcels , parcel14);
+    parcels = addParcelAtEnd(&parcels , parcel15);
+    parcels = addParcelAtEnd(&parcels , parcel16);
     
 
-    path = constructionPhase(&parcels , &path , &d1);
+    path = constructionPhase(&parcels , &path);
 
     
     
-    for(int i = 0 ; i < (int)path.parcels.size();i++ ){
+    for(int i = 0 ; i < (int)path.parcels.size() -1;i++ ){
       cout << "point " << i << "with latitude " << path.parcels[i].latitude << " with longitude " << path.parcels[i].longitude << "\n";
     }
-    
+    cout << "path size " << path.parcels.size() << "\n";
+    d1 = calculatePathCost(&path);
+    cout << "total distance \n" << d1;
+    //local search 
+    //using 2-opt method : from the choosen path , start calculating combinations to find a better solution
 
-    cout << "total distance " << d1;
+  //   repeat until no improvement is made {
+  //      start_again:
+  //      best_distance = calculateTotalDistance(existing_route)
+  //      for (i = 1; i < number of nodes eligible to be swapped - 1; i++) {
+  //          for (k = i + 1; k < number of nodes eligible to be swapped; k++) {
+  //              new_route = 2optSwap(existing_route, i, k)
+  //              new_distance = calculateTotalDistance(new_route)
+  //              if (new_distance < best_distance) {
+  //                  existing_route = new_route
+  //                  best_distance = new_distance
+  //                  goto start_again
+  //              }
+  //          }
+  //      }
+  //  }
+
     t = clock() - 1;
     //end execution time
     double execution_time = ((double)t);

@@ -7,19 +7,15 @@ using namespace std;
 
 
 
-int main ()
-{ 
-  clock_t t;
+int main ( ){ 
+    clock_t t;
     
-
     Parcels parcels;
     Parcels path;
     
     float d1;
     float d2;
 
-    
-    
     //start execution time
     t = clock();
     
@@ -62,7 +58,4 @@ int main ()
     return 0;
   
 
-  
-
-  
 }
