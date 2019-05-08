@@ -78,18 +78,18 @@ int main ()
   //   repeat until no improvement is made {
   //      start_again:
   //      best_distance = calculateTotalDistance(existing_route)
-  //      for (i = 1; i < number of nodes eligible to be swapped - 1; i++) {
-  //          for (k = i + 1; k < number of nodes eligible to be swapped; k++) {
-  //              new_route = 2optSwap(existing_route, i, k)
-  //              new_distance = calculateTotalDistance(new_route)
-  //              if (new_distance < best_distance) {
-  //                  existing_route = new_route
-  //                  best_distance = new_distance
-  //                  goto start_again
-  //              }
-  //          }
-  //      }
-  //  }
+       for (int i = 0; i < (int)path.parcels.size() ; i++) {
+           for (int j = i + 1; j < (int) path.parcels.size(); j++) {
+               new_route = std::swap(path ,)
+               float new_distance = calculateTotalDistance(new_route);
+               if (new_distance < best_distance) {
+                   existing_route = new_route
+                   best_distance = new_distance
+                   goto start_again
+              
+           }
+       }
+  
 
     t = clock() - 1;
     //end execution time

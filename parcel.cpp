@@ -232,3 +232,7 @@ float calculatePathCost(Parcels *path){
     }
     return distance;
 }
+
+Parcels opt2Swap(Parcels *path, int i, int k){
+    
+}
