@@ -70,26 +70,27 @@ int main ()
       cout << "point " << i << "with latitude " << path.parcels[i].latitude << " with longitude " << path.parcels[i].longitude << "\n";
     }
     cout << "path size " << path.parcels.size() << "\n";
-    d1 = calculatePathCost(&path);
-    cout << "total distance \n" << d1;
+    d1 = calculatePathCost(path);
+    cout << "total distance " << d1 << "\n";
+    cout << "################################# LOCAL SEARCH ####################################################\n";
     //local search 
     //using 2-opt method : from the choosen path , start calculating combinations to find a better solution
-
+    cout << d1 << "\n";
   //   repeat until no improvement is made {
   //      start_again:
   //      best_distance = calculateTotalDistance(existing_route)
-       for (int i = 0; i < (int)path.parcels.size() ; i++) {
+    for (int i = 0; i < (int)path.parcels.size() ; i++) {
            for (int j = i + 1; j < (int) path.parcels.size(); j++) {
-               new_route = std::swap(path ,)
-               float new_distance = calculateTotalDistance(new_route);
-               if (new_distance < best_distance) {
-                   existing_route = new_route
-                   best_distance = new_distance
-                   goto start_again
-              
-           }
-       }
-  
+               Parcels new_path = opt2Swap(&path , i , j);
+               float new_distance = calculatePathCost(path);
+               cout << "calculate cost" << new_distance << "\n";
+               if (new_distance < d1) {
+                   path = new_path;
+                   d1 = new_distance;
+                   cout << "new optimal cost found " << d1 << "\n";
+                }
+        }
+    }
 
     t = clock() - 1;
     //end execution time
@@ -98,7 +99,4 @@ int main ()
     return 0;
   
 
-  
-
-  
 }

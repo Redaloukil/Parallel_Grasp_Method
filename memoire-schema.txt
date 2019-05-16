@@ -1,0 +1,6 @@
+1 - Introcudtion about Travel Salesman Problem.
+2 - Combinatorial optimisation.
+3 - Grasp method.
+4 - General purpose gpu.
+5 - implementation in c++.
+6 - use cases in production.

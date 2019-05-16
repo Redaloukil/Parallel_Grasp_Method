@@ -222,17 +222,21 @@ Parcels randomSearch(Parcels *parcels , Parcels *path){
     return *path;
 }
 
-float calculatePathCost(Parcels *path){ 
+// local search methods
+float calculatePathCost(Parcels path){ 
     float distance = 0;
-    for(int i =0; i < (int)path->parcels.size();i++){
+    for(int i =0; i < (int)path.parcels.size();i++){
         Cordinate start_cordinate;
-        start_cordinate.latitude = path->parcels[i].latitude;
-        start_cordinate.longitude = path->parcels[i].longitude;
-        distance = distance + calculateCost(path->parcels[i+1] , start_cordinate);
+        start_cordinate.latitude = path.parcels[i].latitude;
+        start_cordinate.longitude = path.parcels[i].longitude;
+        distance = distance + calculateCost(path.parcels[i+1] , start_cordinate);
     }
     return distance;
 }
 
-Parcels opt2Swap(Parcels *path, int i, int k){
-    
+Parcels opt2Swap(Parcels *path, int i, int j){
+    Parcel parcel = path->parcels[i];
+    path->parcels[i] = path->parcels[j];
+    path->parcels[j] = parcel;
+    return *path;
 }
