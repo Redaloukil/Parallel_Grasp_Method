@@ -1,4 +1,9 @@
+1 - Introduction generale.
+
+
 1 - Introcudtion about Travel Salesman Problem.
+
+
 2 - Combinatorial optimisation.
 3 - Grasp method.
 4 - General purpose gpu.

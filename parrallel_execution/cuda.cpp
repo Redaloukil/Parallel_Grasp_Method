@@ -18,11 +18,9 @@ __GLOBAL__
 void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
     //malloc a list local restricted candidates list
     Rcl localRcl;
-    
     //thread block dimentions 
     int t = threadIdx.x;
     int T = blockDim.x;
-    
     //map function : for each evaluate cost and push to local rcl
     for (int i = t;i<parcels->parcels.size(); i += T){
         float cost = calculateCost(position , parcels->parcels[i]);
@@ -35,7 +33,6 @@ void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
             printf(" not selected\n");
         }
     }
-
     //select randomly from rcl
     int elem = randBetweenInt(0 , rcl->parcels.size());
     Parcel selectedParcel = rcl->parcels[elem];
@@ -60,8 +57,7 @@ void parellelConstructionPhase(Parcels parcels){
         SelectionPhase<<<NUMBEROFWORKERS , 1 >>>(parcels , rcl);
         //wait Kernel end
         cudaDeviceSychronize();
-         
-        
+    
     }
 }
 
