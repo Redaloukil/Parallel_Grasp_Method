@@ -22,7 +22,8 @@ int main ()
     // gen_random(&s , 10);
     // printf("%c" , s);
     Parcels parcels;
-    Parcels *h_parcels;
+    Parcels path;
+   
     // Parcels *d_parcels;
     
     parcels = initializeList(&parcels);
@@ -64,19 +65,35 @@ int main ()
     parcels = addParcelAtEnd(&parcels , parcel15);
     parcels = addParcelAtEnd(&parcels , parcel16);
     
-
-    h_parcels = (Parcels*)malloc(1*sizeof(Parcels));
     
-    h_parcels = &parcels;
+    //parcels malloc 
+    vector<Parcel> h_parcels = parcels.parcels;
+    vector<Parcel> h_path;
+    
+    Parcel d_parcels = &parcels.parcels[0]
+    Parcel d_path = &parcels.parcels[0]
+    // h_parcels = (Parcels*)malloc(1*sizeof(Parcels));
+    
+    
+    cudaMalloc((void**)&d_parcels, parcels.parcels.size() * sizeof(Parcel));
+    cudaMalloc((void**)&d_path, parcels.parcels.size() * sizeof(Parcel)); 	
     // cudaMalloc(&h_parcels, sizeof(parcels));
+    cudaMemcpy(d_parcels, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_path, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
+    
+    constructionPhase(vector<Parcel> d_parcels , vector<Parcel> path);
+    constructionPhase(vector<Parcel> d_parcels , vector<Parcel> path);
+    
     
 
-    printf("%d" ,(int)h_parcels->parcels.size());
+    // printf("%d" ,(int)h_parcels->parcels.size());
     
-    for (int i=0;i<(int)h_parcels->parcels.size();i++){
-        printf("%f \n"  ,(float) h_parcels->parcels[i].latitude);
-    }
-
+    // for (int i=0;i<(int)h_parcels->parcels.size();i++){
+    //     printf("%f \n"  ,(float) h_parcels->parcels[i].latitude);
+    // }
+    // for (int i=0;i<(int)h_parcels.size();i++){
+    //     printf("%f \n"  ,(float) h_parcels[i].latitude);
+    // }
     
     return 0;
 

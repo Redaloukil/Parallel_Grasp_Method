@@ -42,10 +42,10 @@ void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
 }   
 
 
-void parellelConstructionPhase(Parcels parcels){
+void parellelConstructionPhase(vector<Parcel> parcels){
     Rcl rcl;
     //Cuda malloc list Rcl
-    while(parcels > 0){
+    while(parcels.size() > 0){
         float min = calculateMin(position , parcels);
         float max = calculateMax(position , parcels);
         
@@ -57,7 +57,6 @@ void parellelConstructionPhase(Parcels parcels){
         SelectionPhase<<<NUMBEROFWORKERS , 1 >>>(parcels , rcl);
         //wait Kernel end
         cudaDeviceSychronize();
-    
     }
 }
 
