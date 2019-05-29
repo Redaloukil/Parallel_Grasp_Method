@@ -10,17 +10,18 @@
 // std::mutex rcl_mutex;
 void pushGlobalRcl(Parcel parcel , int thread_index , Rcl rcl){
     rcl->parcels[thread_index] = parcel;
-
 }
 
 
 __GLOBAL__ 
-void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
+void SelectionPhase(vector<Parcel> *parcels ,Rcl *rcl  ,Cordinate position){
     //malloc a list local restricted candidates list
     Rcl localRcl;
+    
     //thread block dimentions 
     int t = threadIdx.x;
     int T = blockDim.x;
+
     //map function : for each evaluate cost and push to local rcl
     for (int i = t;i<parcels->parcels.size(); i += T){
         float cost = calculateCost(position , parcels->parcels[i]);
@@ -30,7 +31,7 @@ void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
             printf(" selected\n");
             localRcl->parcels.push_back(parcel);
         }else {
-            printf(" not selected\n");
+            printf("not selected\n");
         }
     }
     //select randomly from rcl
@@ -42,21 +43,25 @@ void SelectionPhase(Parcels *parcels ,Rcl *rcl  ,Cordinate position){
 }   
 
 
-void parellelConstructionPhase(vector<Parcel> parcels){
+void parellelConstructionPhase(vector<Parcel> parcels , vector<Parcel> path){
     Rcl rcl;
+    Cordinate position;
     //Cuda malloc list Rcl
     while(parcels.size() > 0){
         float min = calculateMin(position , parcels);
         float max = calculateMax(position , parcels);
-        
         float item = min + ALPHA*(max - min);
+        
         //Copy list memory to Device 
         
         //host to device 
         //start Kernels
-        SelectionPhase<<<NUMBEROFWORKERS , 1 >>>(parcels , rcl);
+        SelectionPhase<<<NUMBEROFWORKERS , 1 >>>(parcels , rcl , position);
         //wait Kernel end
         cudaDeviceSychronize();
+         int elem = randBetweenInt(0 , rcl->parcels.size());
+         Parcel selectedParcel = rcl->parcels[elem];
+         path[path.size()] = selectParcel;  
     }
 }
 

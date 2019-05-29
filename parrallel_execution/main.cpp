@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include <cuda_runtime_api.h>
+#include <cuda.h>
 // vector::push_back
 #include<iostream>
 #include"parcel.cpp"
@@ -16,7 +18,7 @@ int main ()
 { 
 
     //start execution time
-    // t = clock();
+    t = clock();
     
     // char *s;
     // gen_random(&s , 10);
@@ -69,6 +71,7 @@ int main ()
     //parcels malloc 
     vector<Parcel> h_parcels = parcels.parcels;
     vector<Parcel> h_path;
+    Rcl global_rcl;
     
     Parcel d_parcels = &parcels.parcels[0]
     Parcel d_path = &parcels.parcels[0]
@@ -81,10 +84,12 @@ int main ()
     cudaMemcpy(d_parcels, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
     cudaMemcpy(d_path, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
     
-    constructionPhase(vector<Parcel> d_parcels , vector<Parcel> path);
-    constructionPhase(vector<Parcel> d_parcels , vector<Parcel> path);
+
+    printf("%d" , d_parcels.size());
+    parellelConstructionPhase(vector<Parcel> d_parcels , vector<Parcel> d_path);
     
     
+
 
     // printf("%d" ,(int)h_parcels->parcels.size());
     
