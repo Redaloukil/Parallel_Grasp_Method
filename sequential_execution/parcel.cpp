@@ -6,7 +6,7 @@
 
 #define STARTPOINT 0
 #define WORKERS_NUM 4 
-#define ALPHA 0.6
+#define ALPHA 0
 #define CURRENTLAT 0
 #define CURRENTLON 0
 #define PARCELSNUMBER 20
@@ -196,8 +196,7 @@ Parcels constructionPhase(Parcels *parcels ,Parcels *path){
         position.latitude = selectedParcel.parcel.latitude;
         position.longitude = selectedParcel.parcel.longitude;
         rcl = initializeRCList(&rcl);
-
-    }
+        }
     return *path;
 
 }
