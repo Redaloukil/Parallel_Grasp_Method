@@ -6,7 +6,7 @@
 
 #define STARTPOINT 0
 #define WORKERS_NUM 4 
-#define ALPHA 0
+#define ALPHA 0.5
 #define CURRENTLAT 0
 #define CURRENTLON 0
 #define PARCELSNUMBER 20
