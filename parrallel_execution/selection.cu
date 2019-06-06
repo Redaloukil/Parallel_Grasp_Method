@@ -8,7 +8,7 @@
 #include<vector>
 #include<algorithm>
 
-__GLOBAL__ 
+__GLOBAL__
 void SelectionPhase(vector<Parcel> *parcels ,Rcl *rcl  ,Cordinate position){
     //malloc a list local restricted candidates list
     Rcl localRcl;

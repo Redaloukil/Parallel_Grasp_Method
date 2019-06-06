@@ -2,17 +2,20 @@
 
 #include <cuda_runtime_api.h>
 #include <cuda.h>
+
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+
 // vector::push_back
 #include<iostream>
 #include"parcel.cpp"
-#include<vector>
-#include<algorithm>
+
+
+using namespace std;
 
 #define PARCELS_NUMBER 30
 
 using namespace std;
-
-
 
 int main ()
 { 
@@ -23,17 +26,13 @@ int main ()
     // char *s;
     // gen_random(&s , 10);
     // printf("%c" , s);
-    Parcels parcels;
-    Parcels path;
+    thrust::host_vector<Parcel> parcels(PARCELS_NUMBER);
+    thrust::host_vector<Parcel> path(PARCELS_NUMBER);
    
-    // Parcels *d_parcels;
+ 
+    
 
 
-    // read te file 
-
-
-
-    parcels = initializeList(&parcels);
     
     Parcel parcel1 ;parcel1.latitude = 2216.6667 ;parcel1.longitude = 1516.6667;
     Parcel parcel2 ;parcel2.latitude = 2233.3333 ;parcel2.longitude = 1566.6667;
@@ -92,53 +91,55 @@ int main ()
     // Parcel parcel14; parcel14.latitude = 4; parcel14.longitude = 0; 
     // Parcel parcel15; parcel15.latitude = 3; parcel15.longitude = 0;
     // Parcel parcel16; parcel16.latitude = 4; parcel16.longitude = 8; 
+
+    
     
     // parcels = generateParcels(&parcels);
-    parcels = addParcelAtEnd(&parcels , parcel1);
-    parcels = addParcelAtEnd(&parcels , parcel2);
-    parcels = addParcelAtEnd(&parcels , parcel3);
-    parcels = addParcelAtEnd(&parcels , parcel4);
-    parcels = addParcelAtEnd(&parcels , parcel5);
-    parcels = addParcelAtEnd(&parcels , parcel6);
-    parcels = addParcelAtEnd(&parcels , parcel7);
-    parcels = addParcelAtEnd(&parcels , parcel8);
-    parcels = addParcelAtEnd(&parcels , parcel9);
-    parcels = addParcelAtEnd(&parcels , parcel10);
-    parcels = addParcelAtEnd(&parcels , parcel11);
-    parcels = addParcelAtEnd(&parcels , parcel12);
-    parcels = addParcelAtEnd(&parcels , parcel13);
-    parcels = addParcelAtEnd(&parcels , parcel14);
-    parcels = addParcelAtEnd(&parcels , parcel15);
-    parcels = addParcelAtEnd(&parcels , parcel16);
-    parcels = addParcelAtEnd(&parcels , parcel17);
-    parcels = addParcelAtEnd(&parcels , parcel18);
-    parcels = addParcelAtEnd(&parcels , parcel19);
-    parcels = addParcelAtEnd(&parcels , parcel20);
-    parcels = addParcelAtEnd(&parcels , parcel21);
-    parcels = addParcelAtEnd(&parcels , parcel22);
-    parcels = addParcelAtEnd(&parcels , parcel23);
-    parcels = addParcelAtEnd(&parcels , parcel24);
-    parcels = addParcelAtEnd(&parcels , parcel25);
-    parcels = addParcelAtEnd(&parcels , parcel26);
-    parcels = addParcelAtEnd(&parcels , parcel27);
-    parcels = addParcelAtEnd(&parcels , parcel28);
-    parcels = addParcelAtEnd(&parcels , parcel29);
-    parcels = addParcelAtEnd(&parcels , parcel30);
-    parcels = addParcelAtEnd(&parcels , parcel31);
-    parcels = addParcelAtEnd(&parcels , parcel32);
-    parcels = addParcelAtEnd(&parcels , parcel33);
-    parcels = addParcelAtEnd(&parcels , parcel34);
-    parcels = addParcelAtEnd(&parcels , parcel35);
-    parcels = addParcelAtEnd(&parcels , parcel36);
-    parcels = addParcelAtEnd(&parcels , parcel37);
-    parcels = addParcelAtEnd(&parcels , parcel38);
-    parcels = addParcelAtEnd(&parcels , parcel39);
-    parcels = addParcelAtEnd(&parcels , parcel40);
+    host_vector.push_back(parcel1);
+    host_vector.push_back(parcel2);
+    host_vector.push_back(parcel3);
+    host_vector.push_back(parcel4);
+    host_vector.push_back(parcel5);
+    host_vector.push_back(parcel6);
+    host_vector.push_back(parcel7);
+    host_vector.push_back(parcel8);
+    host_vector.push_back(parcel9);
+    host_vector.push_back(parcel10);
+    host_vector.push_back(parcel11);
+    host_vector.push_back(parcel12);
+    host_vector.push_back(parcel13);
+    host_vector.push_back(parcel14);
+    host_vector.push_back(parcel15);
+    host_vector.push_back(parcel16);
+    host_vector.push_back(parcel17);
+    host_vector.push_back(parcel18);
+    host_vector.push_back(parcel19);
+    host_vector.push_back(parcel20);
+    host_vector.push_back(parcel21);
+    host_vector.push_back(parcel22);
+    host_vector.push_back(parcel23);
+    host_vector.push_back(parcel24);
+    host_vector.push_back(parcel25);
+    host_vector.push_back(parcel26);
+    host_vector.push_back(parcel27);
+    host_vector.push_back(parcel28);
+    host_vector.push_back(parcel29);
+    host_vector.push_back(parcel30);
+    host_vector.push_back(parcel31);
+    host_vector.push_back(parcel32);
+    host_vector.push_back(parcel33);
+    host_vector.push_back(parcel34);
+    host_vector.push_back(parcel35);
+    host_vector.push_back(parcel36);
+    host_vector.push_back(parcel37);
+    host_vector.push_back(parcel38);
+    host_vector.push_back(parcel39);
+    host_vector.push_back(parcel40);
     
     
     //parcels malloc 
-    vector<Parcel> h_parcels = parcels.parcels;
-    vector<Parcel> h_path;
+    
+    
     // Rcl global_rcl;
     
     // Parcel d_parcels = &parcels.parcels[0]
