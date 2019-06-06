@@ -21,13 +21,12 @@ void parellelConstructionPhase(thrust::host_vector<Parcel> parcels , thrust::hos
 
 
     //Memory copy candidate list to device
-    thrust::device_parcels<Parcel> d_parcels = parcels;
+    thrust::device_vector<Parcel> d_parcels = parcels;
     
     Cordinate *h_position , *d_position;
 
     
-    
-    
+    //MALLOC DEVICE MEMORY SPACE
     h_position->latitude = 31074.4444; 
     h_position->longitude = 31706.3889;
 
@@ -36,14 +35,14 @@ void parellelConstructionPhase(thrust::host_vector<Parcel> parcels , thrust::hos
     d_position->latitude = 31074.4444;
     h_position->longitude = 31706.3889;
     
-    cudaMemcpy(p_hgpu->pass, p->pass, sizeof(int) * 5, cudaMemcpyHostToDevice);
+    
 
     thrust::host_rcl<SelectParcel> HostRcl(NUMBER_THREADS) = parcels;
     thrust::device_rcl<SelectParcel> DeviceRcl(NUMBER_THREADS) = HostRcl;
 
+    cudaMemcpy(p_hgpu->pass, p->pass, sizeof(int) * 5, cudaMemcpyHostToDevice);
     
-    
-    //MALLOC DEVICE MEMORY SPACE    
+        
     
     
     // cudaMalloc(&h_parcels, sizeof(parcels));

@@ -5,37 +5,40 @@
 // vector::push_back
 #include<iostream>
 #include"parcel.cpp"
-#include<vector>
+
+
+#include <thrust/device_vector.h>
+
 #include<algorithm>
 
 __GLOBAL__
 void SelectionPhase(vector<Parcel> *parcels ,Rcl *rcl  ,Cordinate position){
-    //malloc a list local restricted candidates list
-    Rcl localRcl;
     
     //thread block dimentions 
     int t = threadIdx.x;
     int T = blockDim.x;
 
+    //malloc a list local restricted candidates list
+    thrust::device_vector<SelectParcel> LocalRcl(4);
+
     //map function : for each evaluate cost and push to local rcl
-    for (int i = t;i<parcels->parcels.size(); i += T){
+    for (int i = t ; i < parcels.size() ; i += T){
         float cost = calculateCost(position , parcels->parcels[i]);
         if(cost <= item){
             int index = i;
-            SelectParcel parcel;parcel.index = index;
+            SelectParcel parcel ; parcel.index = index;
             parcel.parcel = parcels->parcels[i];
             printf("selected\n");
-            localRcl->parcels.push_back(parcel);
+            LocalRcl.push_back(parcel);
         }else {
             printf("not selected\n");
         }
     }
     //select randomly from rcl
-    int elem = randBetweenInt(0 , rcl->parcels.size());
-    Parcel selectedParcel = rcl->parcels[elem];
+    int elem = randBetweenInt(0 , rcl.size());
+    Parcel selectedParcel = rcl[elem];
     
     //push selected parcel to the global rcl 
-    rcl->parcels[t] = selectedParcel;
-    
+    rcl.push_back(selectedParcel) = selectedParcel;
     
 }  

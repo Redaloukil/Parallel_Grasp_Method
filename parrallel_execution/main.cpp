@@ -153,8 +153,6 @@ int main ()
     // cudaMemcpy(d_parcels, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
     // cudaMemcpy(d_path, h_parcels, h_parcels.size() * sizeof(Parcel), cudaMemcpyHostToDevice);
     
-
-    printf("%d" , d_parcels.size());
     parellelConstructionPhase(&h_parcels , &h_path);
     
     
