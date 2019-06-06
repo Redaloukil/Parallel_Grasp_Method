@@ -1,22 +1,21 @@
-#include <stdio.h>
-
-#include <cuda_runtime_api.h>
-#include <cuda.h>
+//#include <stdio.h>
+//#include <cuda_runtime_api.h>
+//#include <cuda.h>
 // vector::push_back
-#include<iostream>
-#include"parcel.cpp"
+//#include<iostream>
+//#include"parcel.cpp"
 
 
-#include <thrust/device_vector.h>
+//#include <thrust/device_vector.h>
 
-#include<algorithm>
+//#include<algorithm>
 
-__GLOBAL__
-void SelectionPhase(vector<Parcel> *parcels ,Rcl *rcl  ,Cordinate position){
+__global__
+void SelectionPhase(thrust::device_vector<Parcel> parcels, thrust::device_vector<SelectParcel> rcl, Cordinate position){
     
     //thread block dimentions 
-    int t = threadIdx.x;
-    int T = blockDim.x;
+    int t = blockIdx.x * blockDim + threadIdx.x;
+//    int T = blockDim.x;
 
     //malloc a list local restricted candidates list
     thrust::device_vector<SelectParcel> LocalRcl(4);
@@ -39,6 +38,5 @@ void SelectionPhase(vector<Parcel> *parcels ,Rcl *rcl  ,Cordinate position){
     Parcel selectedParcel = rcl[elem];
     
     //push selected parcel to the global rcl 
-    rcl.push_back(selectedParcel) = selectedParcel;
-    
+    rcl.push_back(selectedParcel) = selectedParcel;    
 }  

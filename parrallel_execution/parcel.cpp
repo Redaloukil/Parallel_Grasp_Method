@@ -79,13 +79,13 @@ int randBetweenInt(int min , int max ) {
 }
 
 //rand between float 
-__DEVICE__ float randBetweenFloat(int min , int max ) {
+__device__ float randBetweenFloat(int min , int max ) {
     srand(time(NULL));
     return ((float)rand()/RAND_MAX) * (max - min) + min;
 }
 
 //calculate the cost between current and next point 
-__DEVICE__ float calculateCost(Parcel nextPoint , Cordinate startPoint){
+__device__ float calculateCost(Parcel nextPoint , Cordinate startPoint){
     float b = (square(nextPoint.longitude - startPoint.longitude)) + (square(nextPoint.latitude - startPoint.latitude));
     return sqrt(b);
 }

@@ -1,7 +1,7 @@
 #include<iostream>
 
 #include<math.h>
-#include<parcels.cpp>
+#include "selection.cu"
 
 #define NUMBEROFWORKERS 3
 #define NUMBER_THREADS 8
@@ -15,32 +15,28 @@
 
 
 void parellelConstructionPhase(thrust::host_vector<Parcel> parcels , thrust::host_vector<Parcel> path){
-    Cordinate *d_position , *h_position;
-    
-    Cordinate position;
-
 
     //Memory copy candidate list to device
     thrust::device_vector<Parcel> d_parcels = parcels;
     
-    Cordinate *h_position , *d_position;
+    Cordinate h_position , *d_position;
 
     
     //MALLOC DEVICE MEMORY SPACE
-    h_position->latitude = 31074.4444; 
-    h_position->longitude = 31706.3889;
+    h_position.latitude = 31074.4444; 
+    h_position.longitude = 31706.3889;
 
     d_position  = (Cordinate*)malloc(sizeof(Cordinate));
 
-    d_position->latitude = 31074.4444;
-    h_position->longitude = 31706.3889;
+//    d_position->latitude = 31074.4444;
+//    h_position->longitude = 31706.3889;
     
     
 
-    thrust::host_rcl<SelectParcel> HostRcl(NUMBER_THREADS) = parcels;
-    thrust::device_rcl<SelectParcel> DeviceRcl(NUMBER_THREADS) = HostRcl;
+    thrust::host_vector<SelectParcel> HostRcl(NUMBER_THREADS);// = parcels;
+    thrust::device_vector<SelectParcel> DeviceRcl(NUMBER_THREADS);// = HostRcl;
 
-    cudaMemcpy(p_hgpu->pass, p->pass, sizeof(int) * 5, cudaMemcpyHostToDevice);
+//    cudaMemcpy(p_hgpu->pass, p->pass, sizeof(int) * 5, cudaMemcpyHostToDevice);
     
         
     
@@ -50,8 +46,8 @@ void parellelConstructionPhase(thrust::host_vector<Parcel> parcels , thrust::hos
     
     //Cuda malloc list Rcl
     while(parcels.size() > 0){
-        float min = calculateMin(position , parcels);
-        float max = calculateMax(position , parcels);
+        float min = calculateMin(h_position , parcels);
+        float max = calculateMax(h_position , parcels);
         float item = min + ALPHA*(max - min);
         
         // Copy list memory to Device 

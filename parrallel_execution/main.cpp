@@ -7,9 +7,9 @@
 #include <thrust/device_vector.h>
 
 // vector::push_back
-#include<iostream>
+#include <iostream>
 #include"parcel.cpp"
-
+#include "cuda.cpp"
 
 using namespace std;
 
@@ -21,13 +21,13 @@ int main ()
 { 
 
     //start execution time
-    t = clock();
+    clock_t t = clock();
     
     // char *s;
     // gen_random(&s , 10);
     // printf("%c" , s);
-    thrust::host_vector<Parcel> parcels(PARCELS_NUMBER);
-    thrust::host_vector<Parcel> path(PARCELS_NUMBER);
+    thrust::host_vector<Parcel> h_parcels(PARCELS_NUMBER);
+    thrust::host_vector<Parcel> h_path(PARCELS_NUMBER);
    
  
     
